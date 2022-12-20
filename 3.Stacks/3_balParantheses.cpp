@@ -7,11 +7,11 @@ stack<char> S;
 
 bool pairsWithTop(char x)
 {
-	if (x == '(' && S.top() == ')')
+	if (S.top() == '(' && x == ')')
 		return true;
-	else if (x == '[' && S.top() == ']')
+	else if (S.top() == '[' && x == ']')
 		return true;
-	else if (x == '{' && S.top() == '}')
+	else if (S.top() == '{' && x == '}')
 		return true;
 	else
 		return false;
@@ -32,10 +32,10 @@ bool balancedParantheses(char exp[])
 			{
 				return false;
 			}
-		}
-		else
-		{
-			S.pop();
+			else
+			{
+				S.pop();
+			}
 		}
 	}
 	return (S.empty()) ? true : false;
