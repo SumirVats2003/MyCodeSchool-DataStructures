@@ -47,12 +47,12 @@ bool search(BstNode *root, int data)
 		search(root->right, data);
 }
 
-int bstMin(BstNode *node)
+BstNode *bstMin(BstNode *node)
 {
 	if (node == NULL)
 	{
 		cout << "Empty tree";
-		return -1;
+		return NULL;
 	}
 	// if (root->left == NULL)
 	// 	return root->data;
@@ -61,7 +61,7 @@ int bstMin(BstNode *node)
 	{
 		node = node->left;
 	}
-	return node->data;
+	return node;
 }
 
 int bstMax(BstNode *node)
@@ -99,6 +99,45 @@ void display(BstNode *root)
 	display(root->right);
 }
 
+BstNode *drop(BstNode *root, int data)
+{
+	if (root == NULL)
+		return NULL;
+	if (data < root->data)
+		root->left = drop(root->left, data);
+	else if (data > root->data)
+		root->right = drop(root->right, data);
+	else
+	{
+		if (root->left == NULL && root->right == NULL)
+		{
+			delete root;
+			root = NULL;
+		}
+
+		else if (root->right == NULL)
+		{
+			BstNode *temp = root;
+			root = root->left;
+			delete temp;
+		}
+		else if (root->left == NULL)
+		{
+			BstNode *temp = root;
+			root = root->right;
+			delete temp;
+		}
+
+		else
+		{
+			BstNode *temp = bstMin(root->right);
+			root->data = temp->data;
+			root->right = drop(root->right, temp->data);
+		}
+	}
+	return root;
+}
+
 int main()
 {
 	root = insert(root, 15);
@@ -112,6 +151,6 @@ int main()
 	root = insert(root, 2);
 	display(root);
 	cout << "\n";
-	cout << bstMin(root) << " " << bstMax(root);
+	// cout << bstMin(root) << " " << bstMax(root);
 	return 0;
 }
